@@ -45,17 +45,17 @@ resource "yandex_storage_bucket" "gp-devops-s3-bucket" {
   // Включаем шифрование на стороне сервера по умолчанию
   server_side_encryption_configuration {
     rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = yandex_kms_symmetric_key.sym-key.id
-        sse_algorithm     = "aws:kms"
-      }
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = yandex_kms_symmetric_key.sym-key.id
+      sse_algorithm     = "aws:kms"
     }
+  }
   }
 }
 
 // Создаем ключ шифрования
 resource "yandex_kms_symmetric_key" "sym-key" {
-  folder_id         = local.folder_id
+  folder_id = local.folder_id
   name              = "Ключ для шифрования"
   description       = "Symmetric-Key"
   default_algorithm = "AES_256"

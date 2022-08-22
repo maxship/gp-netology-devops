@@ -110,55 +110,38 @@ and found no differences, so no changes are needed.
 
 ![tfcloud-runs](img/tfcloud-runs.png)
 
-
+После применения конфигурации получаем kubectl конфиг кластера с помощью клиента YC.
 ```shell
-output "external_ip_control_plane" {
-  value = yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address
-}
+$ yc managed-kubernetes --folder-name gp-devops cluster get-credentials k8s-cluster --external
+```
 
-output "external_ip_nodes" {
-  value = yandex_compute_instance_group.k8s-nodes-group.instances[*].network_interface[0].nat_ip_address
-}
+Проверяем файл `~/.kube/config`
 
-# Export host.yml into /kubespray/inventory/gp-devops-k8s-cluster/
-resource "local_file" "k8s_hosts_ip" {
-  content  = <<-DOC
----
-all:
-  hosts:
-    control-plane:
-      ansible_host: ${yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address}
-      ansible_user: ubuntu
-    node-1:
-      ansible_host: ${yandex_compute_instance_group.k8s-nodes-group.instances[0].network_interface.0.nat_ip_address}
-      ansible_user: ubuntu
-    node-2:
-      ansible_host: ${yandex_compute_instance_group.k8s-nodes-group.instances[1].network_interface.0.nat_ip_address}
-      ansible_user: ubuntu
-    node-3:
-      ansible_host: ${yandex_compute_instance_group.k8s-nodes-group.instances[2].network_interface.0.nat_ip_address}
-      ansible_user: ubuntu
-  children:
-    kube_control_plane:
-      hosts:
-        control-plane:
-    kube_node:
-      hosts:
-        node-1:
-        node-2:
-        node-3:
-    etcd:
-      hosts:
-        control-plane:
-    k8s_cluster:
-      vars:
-        supplementary_addresses_in_ssl_keys: ${yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address}
-      children:
-        kube_control_plane:
-        kube_node:
-    calico_rr:
-      hosts: {}
-    DOC
-  filename = "../kubespray/inventory/gp-devops-k8s-cluster/hosts.yml"
-}
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CR.......0tCg==
+    server: https://51.250.74.59
+  name: yc-managed-k8s-cat76u2lj2p2qek5h6np
+contexts:
+- context:
+    cluster: yc-managed-k8s-cat76u2lj2p2qek5h6np
+    user: yc-managed-k8s-cat76u2lj2p2qek5h6np
+  name: yc-k8s-cluster
+current-context: yc-k8s-cluster
+kind: Config
+preferences: {}
+users:
+- name: yc-managed-k8s-cat76u2lj2p2qek5h6np
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - k8s
+      - create-token
+      - --profile=default
+      command: /home/maxship/yandex-cloud/bin/yc
+      env: null
+      provideClusterInfo: false
 ```

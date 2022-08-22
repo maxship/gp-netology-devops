@@ -1,12 +1,11 @@
 terraform {
 
-  ## Стейты хранятся только в облаке
-  #  cloud {
-  #    organization = "maxship"
-  #    workspaces {
-  #      name = "gp-devops-terraform-stage"
-  #    }
-  #  }
+#  cloud {
+#    organization = "maxship"
+#    workspaces {
+#      name = "gp-devops-terraform-stage"
+#    }
+#  }
 
   required_version = ">= 1.2.7"
 
@@ -19,7 +18,7 @@ terraform {
 }
 
 provider "yandex" {
-  cloud_id  = local.cloud_id
+  cloud_id = local.cloud_id
   folder_id = local.folder_id
 }
 
