@@ -1,5 +1,5 @@
 output "k8s_external_ip" {
-  value = "${yandex_kubernetes_cluster.k8s-cluster.master[0].external_v4_endpoint}"
+  value = yandex_kubernetes_cluster.k8s-cluster.master[0].external_v4_endpoint
 }
 
 # Для подключения к кластеру с помощью kubectl

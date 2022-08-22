@@ -1,6 +1,6 @@
 // k8s cluster
 resource "yandex_kubernetes_cluster" "k8s-cluster" {
-  folder_id = local.folder_id
+  folder_id               = local.folder_id
   name                    = "k8s-cluster"
   description             = "kubernetes cluster"
   release_channel         = "STABLE"
@@ -8,9 +8,9 @@ resource "yandex_kubernetes_cluster" "k8s-cluster" {
 
   network_id = yandex_vpc_network.vpc-stage.id
 
-#  kms_provider {
-#    key_id = yandex_kms_symmetric_key.sym-key.id // ключ шифрования
-#  }
+  #  kms_provider {
+  #    key_id = yandex_kms_symmetric_key.sym-key.id // ключ шифрования
+  #  }
 
   master {
     version   = local.k8s.version
@@ -61,7 +61,7 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
   instance_template {
     platform_id = local.k8s.node_platform
 
-# Access to node via ssh
+    # Access to node via ssh
     metadata = {
       ssh-keys = local.k8s.node_ssh_key
     }
@@ -74,8 +74,8 @@ resource "yandex_kubernetes_node_group" "k8s-node-group" {
     }
 
     resources {
-      memory = 2
-      cores  = 2
+      memory        = 2
+      cores         = 2
       core_fraction = 20
     }
 

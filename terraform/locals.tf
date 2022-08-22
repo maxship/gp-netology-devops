@@ -1,12 +1,12 @@
 locals {
-  cloud_id = "b1g3me49qkcgicgvrgv2"
+  cloud_id  = "b1g3me49qkcgicgvrgv2"
   folder_id = "b1ghgjk8qcckif39judt"
 
   k8s = {
-    region  = "ru-central1"
-    version = "1.19"
+    region        = "ru-central1"
+    version       = "1.19"
     node_platform = "standard-v1"
-    node_ssh_key = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+    node_ssh_key  = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
   }
 
   zones = {
