@@ -11,9 +11,9 @@ resource "yandex_compute_instance" "k8s-control-plane" {
     core_fraction = 20
   }
 
-  scheduling_policy {
-    preemptible = true # Прерываемая
-  }
+#  scheduling_policy {
+#    preemptible = true # Прерываемая
+#  }
 
   boot_disk {
     initialize_params {

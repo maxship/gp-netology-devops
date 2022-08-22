@@ -18,9 +18,9 @@ resource "yandex_compute_instance_group" "k8s-nodes-group" {
       }
     }
 
-    scheduling_policy {
-      preemptible = true # Прерываемая
-    }
+#    scheduling_policy {
+#      preemptible = true # Прерываемая
+#    }
 
     network_interface {
       subnet_ids = [

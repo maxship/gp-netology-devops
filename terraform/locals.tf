@@ -8,7 +8,7 @@ locals {
     version        = "1.19"
     node_platform  = "standard-v1"
     cp_platform    = "standard-v1"
-    node_ssh_key   = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
+    node_ssh_key   = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
     instance_image = "fd8mfc6omiki5govl68h" # Ubuntu-20.04
   }
 }
