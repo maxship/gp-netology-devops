@@ -87,7 +87,7 @@ prometheus-stack-kube-state-metrics         ClusterIP   10.96.136.84    <none>  
 prometheus-stack-prometheus-node-exporter   ClusterIP   10.96.206.11    <none>        9100/TCP                     173m
 
 # External IPs
-kubectdescribe nodes | grep External
+kubectl describe nodes | grep External
   ExternalIP:  51.250.90.33
   ExternalIP:  51.250.42.107
   ExternalIP:  51.250.101.247

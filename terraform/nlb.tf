@@ -1,10 +1,10 @@
 resource "yandex_lb_target_group" "nlb-group-grafana" {
 
   name       = "nlb-group-grafana"
-  depends_on = [yandex_compute_instance_group.k8s-nodes-group]
+  depends_on = [yandex_compute_instance_group.k8s-node-group]
 
   dynamic "target" {
-    for_each = yandex_compute_instance_group.k8s-nodes-group.instances
+    for_each = yandex_compute_instance_group.k8s-node-group.instances
     content {
       subnet_id = target.value.network_interface.0.subnet_id
       address   = target.value.network_interface.0.ip_address
@@ -12,14 +12,14 @@ resource "yandex_lb_target_group" "nlb-group-grafana" {
   }
 }
 
-resource "yandex_lb_network_load_balancer" "nlb-grafana" {
+resource "yandex_lb_network_load_balancer" "nlb-grafana-db" {
 
-  name = "nlb-grafana"
+  name = "nlb-grafana-db"
 
   listener {
     name        = "grafana-listener"
-    port        = 3000
-    target_port = 3000
+    port        = 80
+    target_port = 30900
     external_address_spec {
       ip_version = "ipv4"
     }
@@ -31,20 +31,21 @@ resource "yandex_lb_network_load_balancer" "nlb-grafana" {
     healthcheck {
       name = "healthcheck"
       tcp_options {
-        port = 3000
+        port = 30900
       }
     }
   }
   depends_on = [yandex_lb_target_group.nlb-group-grafana]
 }
 
-resource "yandex_lb_network_load_balancer" "test-app-balancer" {
-  name = "nlb-app"
+resource "yandex_lb_network_load_balancer" "nlb-nginx" {
+
+  name = "nlb-nginx"
 
   listener {
     name        = "app-listener"
     port        = 80
-    target_port = 8080
+    target_port = 30800
     external_address_spec {
       ip_version = "ipv4"
     }
@@ -56,12 +57,9 @@ resource "yandex_lb_network_load_balancer" "test-app-balancer" {
     healthcheck {
       name = "healthcheck"
       tcp_options {
-        port = 8080
+        port = 30800
       }
     }
   }
-  depends_on = [
-    yandex_lb_target_group.nlb-group-grafana,
-    yandex_lb_network_load_balancer.nlb-grafana
-  ]
+  depends_on = [yandex_lb_target_group.nlb-group-grafana]
 }

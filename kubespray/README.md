@@ -53,7 +53,7 @@ $ ansible-playbook -i inventory/gp-devops-k8s-cluster/hosts.yml --become --becom
 Подключаемся к мастеру и копируем содержимое файла `/etc/kubernetes/admin`.
 
 ```shell
-ssh ubuntu@84.201.135.82
+ssh ubuntu@84.201.134.49
 sudo cat /etc/kubernetes/admin
 NlU2K0lZdVlqd........ZJQ0FURS0tLS0tCg==
     server: https://127.0.0.1:6443
@@ -73,7 +73,7 @@ users:
     client-key-data: LS0tLS1CRU.........S0tLS0tCg==
 ```
 
-Вставляем содержимое в локальный конфиг, и меняем `https://127.0.0.1:6443/` на внешний IP адрес мастера.
+Вставляем содержимое в локальный конфиг, и меняем `127.0.0.1` на внешний IP адрес мастера `84.201.134.49`.
 ```shell
 code ~/.kube/config
 ```

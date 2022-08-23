@@ -1,5 +1,5 @@
-resource "yandex_compute_instance_group" "k8s-nodes-group" {
-  name               = "k8s-nodes-group"
+resource "yandex_compute_instance_group" "k8s-node-group" {
+  name               = "k8s-node-group"
   folder_id          = local.folder_id
   service_account_id = yandex_iam_service_account.k8s-sa.id
 

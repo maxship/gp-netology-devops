@@ -165,11 +165,11 @@ Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-external_ip_control_plane = "84.201.135.82"
+external_ip_control_plane = "84.201.134.49"
 external_ip_nodes = tolist([
-  "51.250.22.86",
-  "51.250.35.95",
-  "84.201.158.27",
+  "51.250.25.127",
+  "51.250.44.19",
+  "62.84.118.40",
 ])
 ```
 

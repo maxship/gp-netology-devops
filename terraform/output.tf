@@ -3,7 +3,7 @@ output "external_ip_control_plane" {
 }
 
 output "external_ip_nodes" {
-  value = yandex_compute_instance_group.k8s-nodes-group.instances[*].network_interface[0].nat_ip_address
+  value = yandex_compute_instance_group.k8s-node-group.instances[*].network_interface[0].nat_ip_address
 }
 
 # Export host.yml into /kubespray/inventory/gp-devops-k8s-cluster/
@@ -16,13 +16,13 @@ all:
       ansible_host: ${yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address}
       ansible_user: ubuntu
     node-1:
-      ansible_host: ${yandex_compute_instance_group.k8s-nodes-group.instances[0].network_interface.0.nat_ip_address}
+      ansible_host: ${yandex_compute_instance_group.k8s-node-group.instances[0].network_interface.0.nat_ip_address}
       ansible_user: ubuntu
     node-2:
-      ansible_host: ${yandex_compute_instance_group.k8s-nodes-group.instances[1].network_interface.0.nat_ip_address}
+      ansible_host: ${yandex_compute_instance_group.k8s-node-group.instances[1].network_interface.0.nat_ip_address}
       ansible_user: ubuntu
     node-3:
-      ansible_host: ${yandex_compute_instance_group.k8s-nodes-group.instances[2].network_interface.0.nat_ip_address}
+      ansible_host: ${yandex_compute_instance_group.k8s-node-group.instances[2].network_interface.0.nat_ip_address}
       ansible_user: ubuntu
   children:
     kube_control_plane:

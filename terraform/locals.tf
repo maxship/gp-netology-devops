@@ -1,6 +1,6 @@
 locals {
   cloud_id  = "b1g3me49qkcgicgvrgv2"
-  folder_id = "b1ghgjk8qcckif39judt"
+  folder_id = "b1gr78tbtog89l88knlq"
   zone      = "ru-central1-a"
 
   k8s = {
