@@ -111,15 +111,9 @@ and found no differences, so no changes are needed.
 ![tfcloud-runs](img/tfcloud-runs.png)
 
 
+В файле [output.tf](./output.tf) прописан шаблон, формирующий файл `hosts.yml` для запуска плейбука kubespray.
+
 ```shell
-output "external_ip_control_plane" {
-  value = yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address
-}
-
-output "external_ip_nodes" {
-  value = yandex_compute_instance_group.k8s-nodes-group.instances[*].network_interface[0].nat_ip_address
-}
-
 # Export host.yml into /kubespray/inventory/gp-devops-k8s-cluster/
 resource "local_file" "k8s_hosts_ip" {
   content  = <<-DOC
@@ -152,7 +146,7 @@ all:
         control-plane:
     k8s_cluster:
       vars:
-        supplementary_addresses_in_ssl_keys: ${yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address}
+        supplementary_addresses_in_ssl_keys: [${yandex_compute_instance.k8s-control-plane.network_interface.0.nat_ip_address}]
       children:
         kube_control_plane:
         kube_node:
@@ -161,4 +155,59 @@ all:
     DOC
   filename = "../kubespray/inventory/gp-devops-k8s-cluster/hosts.yml"
 }
+```
+
+Применяем полученную конфигурацию.
+
+```shell
+terraform apply
+Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+external_ip_control_plane = "84.201.135.82"
+external_ip_nodes = tolist([
+  "51.250.22.86",
+  "51.250.35.95",
+  "84.201.158.27",
+])
+```
+
+Проверяем содержимое полученного файла [hosts.yml](../kubespray/inventory/gp-devops-k8s-cluster/hosts.yml). 
+```yaml
+---
+all:
+  hosts:
+    control-plane:
+      ansible_host: 84.201.135.82
+      ansible_user: ubuntu
+    node-1:
+      ansible_host: 51.250.22.86
+      ansible_user: ubuntu
+    node-2:
+      ansible_host: 51.250.35.95
+      ansible_user: ubuntu
+    node-3:
+      ansible_host: 84.201.158.27
+      ansible_user: ubuntu
+  children:
+    kube_control_plane:
+      hosts:
+        control-plane:
+    kube_node:
+      hosts:
+        node-1:
+        node-2:
+        node-3:
+    etcd:
+      hosts:
+        control-plane:
+    k8s_cluster:
+      vars:
+        supplementary_addresses_in_ssl_keys: [84.201.135.82]
+      children:
+        kube_control_plane:
+        kube_node:
+    calico_rr:
+      hosts: {}
 ```
