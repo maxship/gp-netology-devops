@@ -1,6 +1,5 @@
 terraform {
 
-  ## Стейты хранятся только в облаке
   #  cloud {
   #    organization = "maxship"
   #    workspaces {
@@ -22,3 +21,5 @@ provider "yandex" {
   cloud_id  = local.cloud_id
   folder_id = local.folder_id
 }
+
+

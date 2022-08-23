@@ -157,4 +157,4 @@ users:
 ```
 Заходим на веб-интерфейс графаны
 
-[!gp-grafana-login.png](./img/gp-grafana-login.png)
+![gp-grafana-login.png](./img/gp-grafana-login.png)
