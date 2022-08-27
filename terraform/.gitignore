@@ -32,7 +32,7 @@ override.tf.json
 .terraform.lock.*
 
 # SSH authorization
-meta.txt
+#meta.txt
 
 .idea/*
 .vscode/*

@@ -6,9 +6,9 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
   instance_template {
 
     resources {
-      memory = 2
-      cores  = 2
-      core_fraction = 20
+      memory = local.k8s.instance_memory_map[terraform.workspace]
+      cores  = local.k8s.instance_cores_map[terraform.workspace]
+      core_fraction = local.k8s.instance_core_fraction_map[terraform.workspace]
     }
 
     boot_disk {
@@ -31,15 +31,20 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
       ]
       nat = true
     }
+## В случае, если терраформ запускается на локальной машине:
+#    metadata = {
+#      ssh-keys = local.k8s.node_ssh_key
+#    }
 
-    metadata = {
-      ssh-keys = local.k8s.node_ssh_key
-    }
+# При запуске из Terraform Cloud
+metadata = {
+    user-data = "${file("./meta.txt")}"
+  }
   }
 
   scale_policy {
     fixed_scale {
-      size = 3
+      size = local.k8s.instance_count_map[terraform.workspace]
     }
   }
 

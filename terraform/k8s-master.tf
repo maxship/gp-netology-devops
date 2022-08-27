@@ -1,14 +1,14 @@
 resource "yandex_compute_instance" "k8s-control-plane" {
 
   name                      = "control-plane"
-  platform_id               = local.k8s.cp_platform
+  platform_id               = local.k8s.node_platform[terraform.workspace]
   allow_stopping_for_update = true
   zone                      = "ru-central1-a"
 
   resources {
-    cores  = 2
-    memory = 2
-    core_fraction = 20
+    memory = node_instance_memory_map[terraform.workspace]
+    cores  = node_instance_cores_map[terraform.workspace]
+    core_fraction = node_instance_core_fraction_map[terraform.workspace]
   }
 
 #  scheduling_policy {
@@ -27,7 +27,13 @@ resource "yandex_compute_instance" "k8s-control-plane" {
     nat       = true
   }
 
-  metadata = {
-    ssh-keys = local.k8s.node_ssh_key
+## В случае, если терраформ запускается на локальной машине:
+#    metadata = {
+#      ssh-keys = local.k8s.node_ssh_key
+#    }
+
+# При запуске из Terraform Cloud
+metadata = {
+    user-data = "${file("./meta.txt")}"
   }
 }
