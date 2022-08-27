@@ -2,21 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: test-app
-  namespace: applications
+  name: my-k8s-app-deploy
+  labels:
+    app: my-k8s-app
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: test-app
+      app: my-k8s-app
   template:
     metadata:
       labels:
-        app: test-app
+        app: my-k8s-app
     spec:
       containers:
-      - image: cr.yandex/crpbagkai0gjear9v07k/nginx:IMG_TAG
-        name: test-app
+      - image: moshipitsyn/my-k8s-app:1.0.3
+        name: my-k8s-app
         ports:
         - containerPort: 80
 #        env:

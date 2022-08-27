@@ -165,12 +165,13 @@ Apply complete! Resources: 16 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-external_ip_control_plane = "84.201.134.49"
+external_ip_control_plane = "51.250.79.113"
 external_ip_nodes = tolist([
-  "51.250.25.127",
-  "51.250.44.19",
-  "62.84.118.40",
+  "84.201.176.157",
+  "51.250.34.168",
+  "62.84.114.207",
 ])
+
 ```
 
 Проверяем содержимое полученного файла [hosts.yml](../kubespray/inventory/gp-devops-k8s-cluster/hosts.yml). 
@@ -179,16 +180,16 @@ external_ip_nodes = tolist([
 all:
   hosts:
     control-plane:
-      ansible_host: 84.201.135.82
+      ansible_host: 51.250.79.113
       ansible_user: ubuntu
     node-1:
-      ansible_host: 51.250.22.86
+      ansible_host: 84.201.176.157
       ansible_user: ubuntu
     node-2:
-      ansible_host: 51.250.35.95
+      ansible_host: 51.250.34.168
       ansible_user: ubuntu
     node-3:
-      ansible_host: 84.201.158.27
+      ansible_host: 62.84.114.207
       ansible_user: ubuntu
   children:
     kube_control_plane:
@@ -204,7 +205,7 @@ all:
         control-plane:
     k8s_cluster:
       vars:
-        supplementary_addresses_in_ssl_keys: [84.201.135.82]
+        supplementary_addresses_in_ssl_keys: [51.250.79.113]
       children:
         kube_control_plane:
         kube_node:

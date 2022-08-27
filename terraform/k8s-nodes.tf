@@ -8,6 +8,7 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
     resources {
       memory = 2
       cores  = 2
+      core_fraction = 20
     }
 
     boot_disk {
@@ -18,9 +19,9 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
       }
     }
 
-    scheduling_policy {
-      preemptible = true # Прерываемая
-    }
+#    scheduling_policy {
+#      preemptible = true # Прерываемая
+#    }
 
     network_interface {
       subnet_ids = [

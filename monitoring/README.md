@@ -59,12 +59,10 @@ spec:
   selector:
     app.kubernetes.io/name: grafana
   ports:
-      # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
-    - port: 3000
+    - name: http
+      nodePort: 30902
+      port: 3000
       targetPort: 3000
-      # Optional field
-      # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
-      nodePort: 30007
 ```
 
 Применяем конфигурацию.
@@ -120,35 +118,6 @@ kube-system   npd-v0.8.0-zjtxk                                         1/1     R
 kube-system   yc-disk-csi-node-v2-hfkr8                                6/6     Running   0          3h11m
 kube-system   yc-disk-csi-node-v2-hsd6m                                6/6     Running   0          3h11m
 kube-system   yc-disk-csi-node-v2-mwmgv                                6/6     Running   0          3h11m
-
-# ~/.kube/config
-cat ~/.kube/config
-apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority-data: LS0tLS1CRUdJTi.......S0tCg==
-    server: https://84.201.173.237
-  name: yc-managed-k8s-catpfvuo50l0gkgjmrke
-contexts:
-- context:
-    cluster: yc-managed-k8s-catpfvuo50l0gkgjmrke
-    user: yc-managed-k8s-catpfvuo50l0gkgjmrke
-  name: yc-k8s-cluster
-current-context: yc-k8s-cluster
-kind: Config
-preferences: {}
-users:
-- name: yc-managed-k8s-catpfvuo50l0gkgjmrke
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      args:
-      - k8s
-      - create-token
-      - --profile=default
-      command: /home/maxship/yandex-cloud/bin/yc
-      env: null
-      provideClusterInfo: false
 ```
 Заходим на веб-интерфейс графаны
 

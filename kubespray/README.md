@@ -53,7 +53,7 @@ $ ansible-playbook -i inventory/gp-devops-k8s-cluster/hosts.yml --become --becom
 Подключаемся к мастеру и копируем содержимое файла `/etc/kubernetes/admin`.
 
 ```shell
-ssh ubuntu@84.201.134.49
+ssh ubuntu@51.250.79.113
 sudo cat /etc/kubernetes/admin
 NlU2K0lZdVlqd........ZJQ0FURS0tLS0tCg==
     server: https://127.0.0.1:6443
@@ -80,27 +80,34 @@ code ~/.kube/config
 
 Проверяем кластер.
 ```shell
+kubectl get nodes
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   17m   v1.24.4
+node-1          Ready    <none>          13m   v1.24.4
+node-2          Ready    <none>          13m   v1.24.4
+node-3          Ready    <none>          13m   v1.24.4
+
 kubectl get pods --all-namespaces
-NAMESPACE     NAME                                    READY   STATUS    RESTARTS      AGE
-kube-system   calico-node-5bj9w                       1/1     Running   0             42m
-kube-system   calico-node-kx22r                       1/1     Running   0             42m
-kube-system   calico-node-npvl9                       1/1     Running   0             42m
-kube-system   calico-node-r8npj                       1/1     Running   0             42m
-kube-system   coredns-74d6c5659f-7dtcv                1/1     Running   0             40m
-kube-system   coredns-74d6c5659f-xv5cs                1/1     Running   0             39m
-kube-system   dns-autoscaler-59b8867c86-gbmvn         1/1     Running   0             39m
-kube-system   kube-apiserver-control-plane            1/1     Running   1             47m
-kube-system   kube-controller-manager-control-plane   1/1     Running   2 (38m ago)   47m
-kube-system   kube-proxy-44fpk                        1/1     Running   0             15m
-kube-system   kube-proxy-574jb                        1/1     Running   0             15m
-kube-system   kube-proxy-5hp8b                        1/1     Running   0             15m
-kube-system   kube-proxy-qsxzt                        1/1     Running   0             15m
-kube-system   kube-scheduler-control-plane            1/1     Running   2 (38m ago)   47m
-kube-system   nginx-proxy-node-1                      1/1     Running   0             43m
-kube-system   nginx-proxy-node-2                      1/1     Running   0             43m
-kube-system   nginx-proxy-node-3                      1/1     Running   0             43m
-kube-system   nodelocaldns-4g7dn                      1/1     Running   0             39m
-kube-system   nodelocaldns-688bk                      1/1     Running   0             39m
-kube-system   nodelocaldns-l925v                      1/1     Running   0             39m
-kube-system   nodelocaldns-w5gzc                      1/1     Running   0             39m
+NAMESPACE     NAME                                    READY   STATUS    RESTARTS        AGE
+kube-system   calico-node-8zqb5                       1/1     Running   0               13m
+kube-system   calico-node-dtpt2                       1/1     Running   0               13m
+kube-system   calico-node-rdxvp                       1/1     Running   0               13m
+kube-system   calico-node-tcl8j                       1/1     Running   0               13m
+kube-system   coredns-74d6c5659f-4pqq2                1/1     Running   0               10m
+kube-system   coredns-74d6c5659f-8xcz9                1/1     Running   0               10m
+kube-system   dns-autoscaler-59b8867c86-hbm8m         1/1     Running   0               10m
+kube-system   kube-apiserver-control-plane            1/1     Running   1               18m
+kube-system   kube-controller-manager-control-plane   1/1     Running   3 (8m38s ago)   18m
+kube-system   kube-proxy-2r2k2                        1/1     Running   0               15m
+kube-system   kube-proxy-hzbdq                        1/1     Running   0               15m
+kube-system   kube-proxy-mdxl8                        1/1     Running   0               15m
+kube-system   kube-proxy-tdwc9                        1/1     Running   0               15m
+kube-system   kube-scheduler-control-plane            1/1     Running   2 (8m38s ago)   18m
+kube-system   nginx-proxy-node-1                      1/1     Running   0               14m
+kube-system   nginx-proxy-node-2                      1/1     Running   0               14m
+kube-system   nginx-proxy-node-3                      1/1     Running   0               14m
+kube-system   nodelocaldns-2kfxs                      1/1     Running   0               10m
+kube-system   nodelocaldns-9w77v                      1/1     Running   0               10m
+kube-system   nodelocaldns-v84sw                      1/1     Running   0               10m
+kube-system   nodelocaldns-xxngq                      1/1     Running   0               10m
 ```

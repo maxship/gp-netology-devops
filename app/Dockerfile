@@ -1,6 +1,11 @@
-FROM ubuntu:20.04
-RUN apt-get -y update && apt-get -y install nginx && apt-get clean
-COPY default /etc/nginx/sites-available/default
-COPY index.html img /usr/share/nginx/html/
-EXPOSE 80/tcp
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+FROM amazonlinux
+
+RUN yum -y update \
+    && yum -y install httpd \
+    && yum -y install php
+
+COPY ./index.php /var/www/html/index.php
+
+CMD ["/usr/sbin/httpd","-D","FOREGROUND"]
+
+EXPOSE 80

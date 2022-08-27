@@ -12,9 +12,9 @@ resource "yandex_lb_target_group" "nlb-group-grafana" {
   }
 }
 
-resource "yandex_lb_network_load_balancer" "nlb-graf" {
+resource "yandex_lb_network_load_balancer" "nlb-grafana" {
 
-  name = "nlb-graf"
+  name = "nlb-grafana"
 
   listener {
     name        = "grafana-listener"
@@ -38,28 +38,28 @@ resource "yandex_lb_network_load_balancer" "nlb-graf" {
   depends_on = [yandex_lb_target_group.nlb-group-grafana]
 }
 
-#resource "yandex_lb_network_load_balancer" "nlb-nginx" {
-#
-#  name = "nlb-nginx"
-#
-#  listener {
-#    name        = "app-listener"
-#    port        = 80
-#    target_port = 30080
-#    external_address_spec {
-#      ip_version = "ipv4"
-#    }
-#  }
-#
-#  attached_target_group {
-#    target_group_id = yandex_lb_target_group.nlb-group-grafana.id
-#
-#    healthcheck {
-#      name = "healthcheck"
-#      tcp_options {
-#        port = 30080
-#      }
-#    }
-#  }
-#  depends_on = [yandex_lb_target_group.nlb-group-grafana]
-#}
+resource "yandex_lb_network_load_balancer" "nlb-my-k8s-app" {
+
+  name = "nlb-my-k8s-app"
+
+  listener {
+    name        = "app-listener"
+    port        = 80
+    target_port = 30903
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.nlb-group-grafana.id
+
+    healthcheck {
+      name = "healthcheck"
+      tcp_options {
+        port = 30903
+      }
+    }
+  }
+  depends_on = [yandex_lb_target_group.nlb-group-grafana]
+}
