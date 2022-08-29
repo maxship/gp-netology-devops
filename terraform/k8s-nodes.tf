@@ -6,8 +6,8 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
   instance_template {
 
     resources {
-      memory = local.k8s.instance_memory_map[terraform.workspace]
-      cores  = local.k8s.instance_cores_map[terraform.workspace]
+      memory        = local.k8s.instance_memory_map[terraform.workspace]
+      cores         = local.k8s.instance_cores_map[terraform.workspace]
       core_fraction = local.k8s.instance_core_fraction_map[terraform.workspace]
     }
 
@@ -19,9 +19,9 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
       }
     }
 
-#    scheduling_policy {
-#      preemptible = true # Прерываемая
-#    }
+    #    scheduling_policy {
+    #      preemptible = true # Прерываемая
+    #    }
 
     network_interface {
       subnet_ids = [
@@ -31,15 +31,15 @@ resource "yandex_compute_instance_group" "k8s-node-group" {
       ]
       nat = true
     }
-## В случае, если терраформ запускается на локальной машине:
-#    metadata = {
-#      ssh-keys = local.k8s.node_ssh_key
-#    }
+    ## В случае, если терраформ запускается на локальной машине:
+    #    metadata = {
+    #      ssh-keys = local.k8s.node_ssh_key
+    #    }
 
-# При запуске из Terraform Cloud
-metadata = {
-    user-data = "${file("./meta.txt")}"
-  }
+    # При запуске из Terraform Cloud
+    metadata = {
+      user-data = "${file("./meta.txt")}"
+    }
   }
 
   scale_policy {

@@ -6,14 +6,14 @@ resource "yandex_compute_instance" "k8s-control-plane" {
   zone                      = "ru-central1-a"
 
   resources {
-    memory = node_instance_memory_map[terraform.workspace]
-    cores  = node_instance_cores_map[terraform.workspace]
-    core_fraction = node_instance_core_fraction_map[terraform.workspace]
+    memory        = local.k8s.instance_memory_map[terraform.workspace]
+    cores         = local.k8s.instance_cores_map[terraform.workspace]
+    core_fraction = local.k8s.instance_core_fraction_map[terraform.workspace]
   }
 
-#  scheduling_policy {
-#    preemptible = true # Прерываемая
-#  }
+  #  scheduling_policy {
+  #    preemptible = true # Прерываемая
+  #  }
 
   boot_disk {
     initialize_params {
@@ -27,13 +27,13 @@ resource "yandex_compute_instance" "k8s-control-plane" {
     nat       = true
   }
 
-## В случае, если терраформ запускается на локальной машине:
-#    metadata = {
-#      ssh-keys = local.k8s.node_ssh_key
-#    }
+  ## В случае, если терраформ запускается на локальной машине:
+  #    metadata = {
+  #      ssh-keys = local.k8s.node_ssh_key
+  #    }
 
-# При запуске из Terraform Cloud
-metadata = {
+  # При запуске из Terraform Cloud
+  metadata = {
     user-data = "${file("./meta.txt")}"
   }
 }
