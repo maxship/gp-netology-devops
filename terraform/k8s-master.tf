@@ -27,13 +27,13 @@ resource "yandex_compute_instance" "k8s-control-plane" {
     nat       = true
   }
 
-  ## В случае, если терраформ запускается на локальной машине:
-  #    metadata = {
-  #      ssh-keys = local.k8s.node_ssh_key
-  #    }
+  # В случае, если терраформ запускается на локальной машине:
+      metadata = {
+        ssh-keys = local.k8s.node_ssh_key
+      }
 
-  # При запуске из Terraform Cloud
-  metadata = {
-    user-data = "${file("./meta.txt")}"
-  }
+#  # При запуске из Terraform Cloud
+#  metadata = {
+#    user-data = "${file("./meta.txt")}"
+#  }
 }

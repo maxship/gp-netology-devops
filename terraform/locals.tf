@@ -11,7 +11,7 @@ locals {
       prod    = "standard-v2"
       default = "standard-v1"
     }
-    #    node_ssh_key   = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+    node_ssh_key   = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
     instance_image = "fd8mfc6omiki5govl68h" # Ubuntu-20.04
     instance_count_map = {
       stage   = "3"

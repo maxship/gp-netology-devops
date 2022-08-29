@@ -12,7 +12,7 @@ resource "yandex_lb_target_group" "nlb-group-grafana" {
   }
 }
 
-resource "yandex_lb_network_load_balancer" "nlb-grafana" {
+resource "yandex_lb_network_load_balancer" "nlb-graf" {
 
   name = "nlb-grafana"
 
@@ -38,7 +38,7 @@ resource "yandex_lb_network_load_balancer" "nlb-grafana" {
   depends_on = [yandex_lb_target_group.nlb-group-grafana]
 }
 
-resource "yandex_lb_network_load_balancer" "nlb-my-k8s-app" {
+resource "yandex_lb_network_load_balancer" "nlb-appl" {
 
   name = "nlb-my-k8s-app"
 

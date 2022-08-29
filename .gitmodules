@@ -1,0 +1,3 @@
+[submodule "my-k8s-app"]
+	path = my-k8s-app
+	url = https://gitlab.com/maxship/my-k8s-app
