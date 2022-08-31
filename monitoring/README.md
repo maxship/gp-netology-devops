@@ -1,4 +1,8 @@
-Ддя создания системы мониторинга воспользуемся [helm чартом](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
+## Подготовка системы мониторинга и деплой приложения
+
+---
+
+Ддя создания системы мониторинга воспользуемся helm чартом из этого [репозитория](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
 
 
 ```shell
@@ -6,8 +10,6 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 helm install prometheus-stack  prometheus-community/kube-prometheus-stack
 ```
-
-
 
 ```shell
 # Выводим список сервисов
@@ -47,6 +49,7 @@ Events:            <none>
 ```
 
 Создаем манифест сервиса типа NodePort.
+
 ```yaml
 # grafana-nodeport-svc.yml
 ---
@@ -119,6 +122,67 @@ kube-system   yc-disk-csi-node-v2-hfkr8                                6/6     R
 kube-system   yc-disk-csi-node-v2-hsd6m                                6/6     Running   0          3h11m
 kube-system   yc-disk-csi-node-v2-mwmgv                                6/6     Running   0          3h11m
 ```
-Заходим на веб-интерфейс графаны
+
+Для доступа извне добавим блок терраформа с [сетевым балансировщиком](../terraform/nlb.tf) для графаны и основного приложения.
+
+```terraform
+# балансировщик для приложения
+resource "yandex_lb_network_load_balancer" "nlb-appl" {
+
+  name = "nlb-my-k8s-app"
+
+  listener {
+    name        = "app-listener"
+    port        = 80
+    target_port = 30903
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.nlb-group-grafana.id
+
+    healthcheck {
+      name = "healthcheck"
+      tcp_options {
+        port = 30903
+      }
+    }
+  }
+  depends_on = [yandex_lb_target_group.nlb-group-grafana]
+}
+
+# балансировщик для графаны
+resource "yandex_lb_network_load_balancer" "nlb-graf" {
+
+  name = "nlb-grafana"
+
+  listener {
+    name        = "grafana-listener"
+    port        = 3000
+    target_port = 30902
+    external_address_spec {
+      ip_version = "ipv4"
+    }
+  }
+
+  attached_target_group {
+    target_group_id = yandex_lb_target_group.nlb-group-grafana.id
+
+    healthcheck {
+      name = "healthcheck"
+      tcp_options {
+        port = 30902
+      }
+    }
+  }
+  depends_on = [yandex_lb_target_group.nlb-group-grafana]
+}
+```
+
+Проверяем доступность веб-интерфейса:
 
 ![gp-grafana-login.png](./img/gp-grafana-login.png)
+
+---
