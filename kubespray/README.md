@@ -26,7 +26,7 @@ $ ansible-playbook -i inventory/gp-devops-k8s-cluster/hosts.yml --become --becom
 Подключаемся к мастеру и копируем содержимое файла `/etc/kubernetes/admin`.
 
 ```shell
-ssh ubuntu@51.250.79.113
+ssh ubuntu@62.84.119.101
 sudo cat /etc/kubernetes/admin
 NlU2K0lZdVlqd........ZJQ0FURS0tLS0tCg==
     server: https://127.0.0.1:6443

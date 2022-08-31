@@ -77,7 +77,7 @@ kubectl apply -f grafana-nodeport-svc.yml
 kubectl get svc -w
 NAME                                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 alertmanager-operated                       ClusterIP   None            <none>        9093/TCP,9094/TCP,9094/UDP   173m
-grafana                                     NodePort    10.96.236.57    <none>        3000:30007/TCP               4s
+grafana                                     NodePort    10.96.236.57    <none>        3000:30902/TCP               4s
 kubernetes                                  ClusterIP   10.96.128.1     <none>        443/TCP                      3h7m
 prometheus-operated                         ClusterIP   None            <none>        9090/TCP                     173m
 prometheus-stack-grafana                    ClusterIP   10.96.134.204   <none>        80/TCP                       173m
@@ -184,5 +184,7 @@ resource "yandex_lb_network_load_balancer" "nlb-graf" {
 Проверяем доступность веб-интерфейса:
 
 ![gp-grafana-login.png](./img/gp-grafana-login.png)
+
+![grafana.png](./img/grafana.png)
 
 ---

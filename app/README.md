@@ -2,6 +2,12 @@
 
 ---
 
+### Ссылка на итоговый репозиторий с helm чартом.
+
+[gitlab.com/maxship/my-k8s-app](https://gitlab.com/maxship/my-k8s-app)
+
+---
+
 Создадим докер-образ с простым веб-сервером, отдающим страницу c IP адресом пода, к которому было осуществлено подключение в данный момент.
 
 Код приложения:
@@ -112,7 +118,7 @@ docker push moshipitsyn/my-k8s-app:1.0.0
 
 ```shell
 kubectl apply -f deployment.yml
-kubectl apply -f nodeport-svc.yml
+kubectl apply -f service.yml
 kubectl get po,svc | grep my-k8s-app
 pod/my-k8s-app-deploy-5c67947cff-jqvkv                       1/1     Running   0          18m
 pod/my-k8s-app-deploy-5c67947cff-lt4hl                       1/1     Running   0          18m
